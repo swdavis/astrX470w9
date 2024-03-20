@@ -1,29 +1,21 @@
 #include <stdio.h>
 #include <omp.h>
 
-int main(int argc, char *argv[]) {
+int main() {
   
-  int numtasks, my_rank;
+  omp_set_num_threads(12); // set max threads to 12
 
-  // Initialize OpenMP
-  #pragma omp parallel
+  int nthread, tid;
+  // start parallel region
+  #pragma omp parallel private(tid)
   {
-    #pragma omp single
-    {
-      numtasks = omp_get_num_threads();
-      my_rank = omp_get_thread_num();
-    }
-    printf("Hello world! My rank: %d\n", my_rank);
+    nthread = omp_get_num_threads();
+    tid = omp_get_thread_num();
+    printf("Hello world! My thread id: %d\n", tid);
   }
-
-  // Ensure that all threads complete printing before proceeding
-  #pragma omp barrier
-
-  // Only one thread (rank 0) prints the number of threads
-  #pragma omp single
-  {
-    printf("Number of processes: %d\n", numtasks);
-  }
+  // Back to serial region so nly one thread  prints
+  // the number of threads
+  printf("Number of threads: %d\n", nthread);
 
   return 0;
 }
