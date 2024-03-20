@@ -1,0 +1,12 @@
+CC = gcc
+CFLAGS = -O3 -fopenmp
+
+omp_example2: omp_example2.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+omp_example3: omp_example3.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+clean :
+	rm -f omp_example2
+	rm -f omp_example3
