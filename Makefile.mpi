@@ -1,5 +1,19 @@
 CC = mpicc
 CFLAGS = -O3
 
+all: mpi_example2 mpi_example3 mpi_example4 mpi_example6
+
 mpi_example2: mpi_example2.c
-	      $(CC) -o $@ $< $(CFLAGS)
+	$(CC) -o $@ $< $(CFLAGS)
+
+mpi_example3: mpi_example3.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+mpi_example4: mpi_example4.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+mpi_example6: mpi_example6.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+clean:
+	rm -f  mpi_example2 mpi_example3 mpi_example4 mpi_example6
