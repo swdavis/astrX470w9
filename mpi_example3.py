@@ -16,17 +16,15 @@ def main():
     for i in range(N % nprocs):
         npart[i] += 1
 
-    
     my_beg = 0
     for i in range(my_rank):
         my_beg += npart[i]
-    my_end = my_beg + npart[my_rank]
 
     # initialize a
     start_time = MPI.Wtime()
     a = np.empty(npart[my_rank])
     for i in range(npart[my_rank]):
-        a[i] = 2*float(i + my_beg)
+        a[i] = 2*(i + my_beg)
     end_time = MPI.Wtime()
     if my_rank == 0:
         print("Time to initialize a: ",end_time-start_time)
@@ -35,7 +33,7 @@ def main():
     start_time = MPI.Wtime()
     b = np.empty(npart[my_rank])
     for i in range(npart[my_rank]):
-        b[i] = (float(i + my_beg))**2
+        b[i] = (i + my_beg)**2
     end_time = MPI.Wtime()
     if my_rank == 0:
         print("Time to initialize b:  ",end_time-start_time)
