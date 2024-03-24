@@ -61,13 +61,32 @@ def main():
 
         # CHANGE: Add code using MPI Send and Recv to pass the
         # the buffers with the neighboring points on the other process
-        pass
+        if nprocs > 1:
+            tag1 = 1
+            tag2 = 2
+            # blocking sends
+            if my_rank != 0:
+                comm.Send([phinew[1], MPI.FLOAT], dest=my_rank-1, tag=tag2)
+            if my_rank != nprocs-1: 
+                comm.Send([phinew[-2], MPI.FLOAT], dest=my_rank+1, tag=tag1)
+            # blocking receives
+            rbuf1 = np.empty(1, dtype=float)
+            rbuf2 = np.empty(1, dtype=float)
+            if my_rank != 0:
+                comm.Recv([rbuf1, MPI.FLOAT], source=my_rank-1, tag=tag1)
+                phinew[0] = rbuf1[0]
+            if my_rank != nprocs-1:
+                comm.Recv([rbuf2, MPI.FLOAT], source=my_rank+1, tag=tag2)
+                phinew[-1] = rbuf2[0]
+
         
         err = error(phi, phinew) # local error
         if nprocs > 1:
             # CHANGE: use MPI Allreduce to compute global error
-            # accross all processes this should use the MPI.SUM operation
-            pass
+            # this should use the MPI.SUM operation
+            gerr = np.zeros(1)
+            comm.Allreduce(np.array([err]), gerr, op=MPI.SUM)
+            err = gerr[0]
         
         phi = phinew
 
@@ -85,10 +104,11 @@ def main():
         xg = x
         phig = phi
 
-    # print total time and plot
+    # print total time
     end_time = MPI.Wtime()
     if my_rank == 0:
         print("Time with {:d} processors: {:e}".format(nprocs, end_time-start_time))
+    if my_rank == 0:
         plt.plot(xg, phig, '.',label="numerical")
         plt.plot(xg,-np.sin(xg)+xg*np.sin(1), label="analytic")
         plt.legend(loc="best")
