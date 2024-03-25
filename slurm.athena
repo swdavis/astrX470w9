@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --partition=standard
 #SBATCH --time=00:30:00
-#SBATCH -J weakath1
+#SBATCH -J wkath1
 #SBATCH -A astr5470-swd8g
 
 module load gcc
