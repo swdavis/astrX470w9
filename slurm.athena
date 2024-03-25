@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --partition=standard
+#SBATCH --time=00:30:00
+#SBATCH -J weakath1
+#SBATCH -A astr5470-swd8g
+
+module load gcc
+module load openmpi
+
+srun /home/swd8g/athena/bin/athena -i athinput.linear_wave3d
