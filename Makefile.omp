@@ -1,6 +1,8 @@
 CC = gcc
 CFLAGS = -O3 -fopenmp
 
+all: omp_example2 omp_example3
+
 omp_example2: omp_example2.c
 	$(CC) -o $@ $< $(CFLAGS)
 
